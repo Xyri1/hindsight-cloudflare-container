@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hindsight-cloudflare-container",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-26",
+
+  "vars": {
+    // Hindsight API
+    "HINDSIGHT_API_HOST": "0.0.0.0",
+    "HINDSIGHT_API_PORT": "8888",
+    "HINDSIGHT_API_LOG_FORMAT": "json",
+    "HINDSIGHT_API_VECTOR_EXTENSION": "pgvector",
+
+    // Keep DB pools conservative for serverless/managed Postgres.
+    "HINDSIGHT_API_DB_POOL_MIN_SIZE": "1",
+    "HINDSIGHT_API_DB_POOL_MAX_SIZE": "10",
+
+    // LLM provider. Change these to your provider/model.
+    "HINDSIGHT_API_LLM_PROVIDER": "openrouter",
+    //"HINDSIGHT_API_LLM_BASE_URL": "", // Optional: set to your provider's base URL when using a custom provider
+    "HINDSIGHT_API_LLM_MODEL": "openai/gpt-5.4-nano",
+
+    // Slim image: use external embeddings/reranking instead of local models.
+    "HINDSIGHT_API_EMBEDDINGS_PROVIDER": "openrouter",
+    "HINDSIGHT_API_EMBEDDINGS_OPENROUTER_MODEL": "openai/text-embedding-3-small",
+
+    "HINDSIGHT_API_RERANKER_PROVIDER": "openrouter",
+    "HINDSIGHT_API_RERANKER_OPENROUTER_MODEL": "cohere/rerank-4-pro",
+
+    // Control Plane talks to the API inside the same container.
+    "HINDSIGHT_CP_DATAPLANE_API_URL": "http://localhost:8888",
+
+    // Optional startup optimization.
+    "HINDSIGHT_API_LAZY_RERANKER": "true",
+  },
+
+  "containers": [
+    {
+      "class_name": "HindsightContainer",
+      "image": "./Dockerfile",
+      "max_instances": 1,
+      "instance_type": "standard-1",
+    },
+  ],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "HINDSIGHT",
+        "class_name": "HindsightContainer",
+      },
+    ],
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["HindsightContainer"],
+    },
+  ],
+}

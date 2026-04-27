@@ -1,0 +1,19 @@
+{
+  "name": "hindsight-cloudflare-container",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "containers:list": "wrangler containers list",
+    "containers:images": "wrangler containers images list",
+    "deploy:prod": "wrangler deploy --secrets-file .env.production"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "wrangler": "latest"
+  }
+}
