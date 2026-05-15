@@ -158,7 +158,7 @@ npm run containers:images
 
 ### Verify deployment
 
-Run the deployment smoke test against the deployed Worker URL:
+Run the fast deployment smoke test against the deployed Worker URL:
 
 ```bash
 npm run test:deployment -- https://hindsight-cloudflare-container.<account>.workers.dev
@@ -170,7 +170,15 @@ Or set the URL in the environment:
 HINDSIGHT_DEPLOYMENT_URL=https://hindsight-cloudflare-container.<account>.workers.dev npm run test:deployment
 ```
 
-If `HINDSIGHT_PROXY_BEARER` is enabled for the deployment, export the same value before running the test or keep it in `.env.production`; the script loads that file automatically when present. The script verifies `/health`, `/openapi.json`, `/docs`, and `/`.
+If `HINDSIGHT_PROXY_BEARER` is enabled for the deployment, export the same value before running the test or keep it in `.env.production`; the script loads that file automatically when present. The deployment smoke test verifies `/health` only.
+
+Run the full lifecycle smoke test when you want to verify database writes, recall, retain, and cleanup:
+
+```bash
+npm run test:lifecycle -- https://hindsight-cloudflare-container.<account>.workers.dev
+```
+
+The lifecycle test creates a temporary bank, confirms empty recall, retains a marker fact, recalls the retained content, and deletes the bank. It uses the same URL and bearer-token environment model as `test:deployment`.
 
 ## Routing behavior
 

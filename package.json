@@ -6,6 +6,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "test:deployment": "node scripts/test-deployment.mjs",
+    "test:lifecycle": "node scripts/test-lifecycle.mjs",
     "containers:list": "wrangler containers list",
     "containers:images": "wrangler containers images list",
     "deploy:prod": "wrangler deploy --secrets-file .env.production"

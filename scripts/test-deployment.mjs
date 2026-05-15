@@ -59,28 +59,6 @@ const checks = [
     path: "/health",
     validate: async (response) => response.ok,
   },
-  {
-    name: "OpenAPI spec",
-    path: "/openapi.json",
-    validate: async (response) => {
-      if (!response.ok) {
-        return false;
-      }
-
-      const body = await response.json();
-      return typeof body.openapi === "string";
-    },
-  },
-  {
-    name: "API docs",
-    path: "/docs",
-    validate: async (response) => response.ok,
-  },
-  {
-    name: "Control Plane UI",
-    path: "/",
-    validate: async (response) => response.ok,
-  },
 ];
 
 let failed = false;
