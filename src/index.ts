@@ -75,6 +75,13 @@ export class HindsightContainer extends Container {
       return this.containerFetch(request, 8888);
     }
 
+    // The image starts the Control Plane after the API is healthy, so an API
+    // request can mark the container healthy before port 9999 is ready.
+    await this.startAndWaitForPorts(9999, {
+      abort: request.signal,
+      portReadyTimeoutMS: 310_000,
+    });
+
     // Everything else goes to the Control Plane UI on 9999.
     return this.containerFetch(request, 9999);
   }
