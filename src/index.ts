@@ -1,6 +1,8 @@
 import { Container, getContainer } from "@cloudflare/containers";
 import { env as workerEnv } from "cloudflare:workers";
 
+const PORT_READY_TIMEOUT_MS = 310_000;
+
 type Env = {
   HINDSIGHT: DurableObjectNamespace<HindsightContainer>;
 
@@ -72,6 +74,11 @@ export class HindsightContainer extends Container {
     ];
 
     if (apiPrefixes.some((prefix) => url.pathname.startsWith(prefix))) {
+      await this.startAndWaitForPorts(8888, {
+        abort: request.signal,
+        portReadyTimeoutMS: PORT_READY_TIMEOUT_MS,
+      });
+
       return this.containerFetch(request, 8888);
     }
 
@@ -79,7 +86,7 @@ export class HindsightContainer extends Container {
     // request can mark the container healthy before port 9999 is ready.
     await this.startAndWaitForPorts(9999, {
       abort: request.signal,
-      portReadyTimeoutMS: 310_000,
+      portReadyTimeoutMS: PORT_READY_TIMEOUT_MS,
     });
 
     // Everything else goes to the Control Plane UI on 9999.

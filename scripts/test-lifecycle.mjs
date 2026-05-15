@@ -153,8 +153,8 @@ try {
           {
             content: retainedFact,
             context: "Codex lifecycle smoke test",
-            document_id: `codex-lifecycle-${unique}`,
-            tags: ["codex-lifecycle-smoke"],
+            document_id: `smoke-test-${unique}`,
+            tags: ["lifecycle-smoke"],
             timestamp: "unset",
           },
         ],
@@ -175,7 +175,7 @@ try {
       body: {
         query: "Which protocol does the Codex lifecycle smoke marker use?",
         types: ["world", "experience"],
-        tags: ["codex-lifecycle-smoke"],
+        tags: ["lifecycle-smoke"],
         tags_match: "all_strict",
         max_tokens: 1024,
       },
