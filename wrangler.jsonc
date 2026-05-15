@@ -34,6 +34,13 @@
     "HINDSIGHT_API_LAZY_RERANKER": "true",
   },
 
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
+
   "containers": [
     {
       "class_name": "HindsightContainer",
