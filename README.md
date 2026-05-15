@@ -156,6 +156,22 @@ List uploaded images:
 npm run containers:images
 ```
 
+### Verify deployment
+
+Run the deployment smoke test against the deployed Worker URL:
+
+```bash
+npm run test:deployment -- https://hindsight-cloudflare-container.<account>.workers.dev
+```
+
+Or set the URL in the environment:
+
+```bash
+HINDSIGHT_DEPLOYMENT_URL=https://hindsight-cloudflare-container.<account>.workers.dev npm run test:deployment
+```
+
+If `HINDSIGHT_PROXY_BEARER` is enabled for the deployment, export the same value before running the test or keep it in `.env.production`; the script loads that file automatically when present. The script verifies `/health`, `/openapi.json`, `/docs`, and `/`.
+
 ## Routing behavior
 
 The Worker routes these prefixes to the Hindsight API on port `8888`:
